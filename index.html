@@ -2,39 +2,487 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Free Fire Tournaments — Free</title>
+  <title>QURASHI Tournaments</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Free Fire free tournaments: host & register with no fees." />
-  <style>
-    :root{
-      --bg:#f7f7fb; --card:#ffffff; --text:#111827; --muted:#6b7280;
-      --brand:#ff6a00; --brand-2:#ff9500; --line:#e5e7eb; --ok:#16a34a; --bad:#ef4444;
-      --radius:16px;
+  <meta name="description" content="QURASHI Tournaments — Free Fire custom rooms, paid entry & prizes." />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">🏆</div>
+        <div>QURASHI Tournaments</div>
+      </div>
+      <div class="tools">
+        <a class="btn ghost" href="payment.html">Payment</a>
+        <a class="btn ghost" href="login.html" id="loginTop">Login</a>
+        <div class="menu">
+          <button id="menuBtn" class="menu-btn">⋮</button>
+          <div id="menuList" class="menu-list">
+            <a href="index.html">Home</a>
+            <a href="payment.html">Payment</a>
+            <a href="login.html" data-login>Login</a>
+            <button id="openAdmin" data-admin>Admin Panel</button>
+            <button id="logoutBtn" data-logout class="hidden">Logout</button>
+          </div>
+        </div>
+        <button class="btn brand" id="btnCreate" data-admin>Create Tournament</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1>Host & Join <span style="color:var(--brand)">Free Fire</span> Tournaments</h1>
+          <p>Entry fee + instant WhatsApp support. Cash prizes via JazzCash/EasyPaisa.</p>
+          <div class="cta">
+            <a href="#list" class="btn brand">Browse Tournaments</a>
+            <a href="#fees" class="btn">Entry Fees</a>
+            <a href="payment.html" class="btn">Payment</a>
+          </div>
+          <p class="note">Admin features (3 dots menu) sirf authorized email se login par dikhte hain.</p>
+        </div>
+        <div class="shot">
+          <img alt="Gaming" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1600&auto=format&fit=crop">
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming -->
+    <section id="list">
+      <div class="container">
+        <div class="row" style="margin-bottom:12px;gap:12px;flex-wrap:wrap">
+          <h2 style="margin:0">Upcoming Tournaments</h2>
+          <div class="tools" style="margin-left:auto">
+            <div class="search">
+              <span>🔎</span>
+              <input id="q" placeholder="Search name, mode, region..." />
+            </div>
+            <select id="mode">
+              <option value="All">All</option>
+              <option value="Solo">Solo</option>
+              <option value="Duo">Duo</option>
+              <option value="Squad">Squad</option>
+            </select>
+          </div>
+        </div>
+        <div id="grid" class="grid"></div>
+        <p id="empty" class="muted" style="display:none;margin-top:10px">No tournaments found. Try another search.</p>
+      </div>
+    </section>
+
+    <!-- Entry Fees -->
+    <section id="fees">
+      <div class="container">
+        <h2>🎮 Entry Fees & Prizes</h2>
+
+        <div class="card" style="margin-bottom:12px">
+          <div class="pad">
+            <h3 style="margin:0 0 6px">Classic (C's) Mode</h3>
+            <table>
+              <thead><tr><th>Mode</th><th>Entry Fee</th><th>Winning Prize</th></tr></thead>
+              <tbody>
+                <tr><td>Solo</td><td>PKR 50</td><td>PKR 90</td></tr>
+                <tr><td>Duo</td><td>PKR 50 / player</td><td>PKR 90 / player</td></tr>
+                <tr><td>Squad</td><td>PKR 50 / player</td><td>PKR 90 / player</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pad">
+            <h3 style="margin:0 0 6px">Battle Royale (BR) Mode</h3>
+            <table>
+              <thead><tr><th>Players</th><th>Entry Fee (per player)</th><th>Winning Prize</th></tr></thead>
+              <tbody>
+                <tr><td>20 players</td><td>PKR 20</td><td>PKR 350</td></tr>
+                <tr><td>30 players</td><td>PKR 20</td><td>PKR 450</td></tr>
+                <tr><td>48 players</td><td>PKR 20</td><td>PKR 600</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="note" style="margin-top:10px">Payment details: see <a href="payment.html">Payment page</a>. WhatsApp support available.</p>
+      </div>
+    </section>
+
+    <!-- Rules -->
+    <section id="rules">
+      <div class="container">
+        <h2>Rules & Fair Play</h2>
+        <ul class="rules">
+          <li>Mobile-only by default; emulator events alag se marked.</li>
+          <li>Ping/connection player ki responsibility; rehost only server fail par.</li>
+          <li>Team/usernames clean & appropriate.</li>
+          <li>Best-of-3 unless match page says otherwise.</li>
+          <li>Disputes proof ke sath submit—admins final call.</li>
+          <li>Room ID/Pass start se 15 min pehle milta hai.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;padding:16px 0;">
+      <div>© <span id="year"></span> QURASHI Tournaments</div>
+      <button class="btn" id="reset" data-admin>Reset Local Data</button>
+    </div>
+  </footer>
+
+  <!-- Register Modal -->
+  <dialog id="regDialog">
+    <form method="dialog" id="regForm">
+      <div class="modal">
+        <div class="row" style="margin-bottom:8px">
+          <h3 style="margin:0">Register — <span id="regTitle"></span></h3>
+          <button class="btn" value="close" formnovalidate>✖</button>
+        </div>
+        <div class="field">
+          <label>Team / Player Name *</label>
+          <input required id="fTeam" placeholder="e.g., Karachi Kings" />
+        </div>
+        <div class="row" style="gap:10px">
+          <div class="field" style="flex:1">
+            <label>Captain *</label>
+            <input required id="fCaptain" placeholder="Your name" />
+          </div>
+          <div class="field" style="flex:1">
+            <label>Phone (WhatsApp) *</label>
+            <input required id="fPhone" placeholder="03xx-xxxxxxx" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Email (optional)</label>
+          <input id="fEmail" placeholder="you@email.com" />
+        </div>
+        <div class="field">
+          <label>Free Fire Player IDs (comma separated)</label>
+          <input id="fIds" placeholder="12345, 67890, ..." />
+        </div>
+        <div class="footer">
+          <button class="btn" value="close" formnovalidate>Cancel</button>
+          <button class="btn brand" id="submitReg" value="submit">Submit</button>
+        </div>
+        <p class="note">Note: data localStorage me safe hota hai (sirf isi device/browser).</p>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Create Tournament Modal -->
+  <dialog id="createDialog">
+    <form id="createForm" method="dialog">
+      <div class="modal">
+        <div class="row" style="margin-bottom:8px">
+          <h3 style="margin:0">Create Tournament</h3>
+          <button class="btn" value="close" formnovalidate>✖</button>
+        </div>
+        <div class="field">
+          <label>Title *</label>
+          <input name="title" required placeholder="Weekend Squad Cup" />
+        </div>
+        <div class="row" style="gap:10px">
+          <div class="field" style="flex:1">
+            <label>Mode *</label>
+            <select name="mode">
+              <option>Solo</option><option>Duo</option><option>Squad</option>
+            </select>
+          </div>
+          <div class="field" style="flex:1">
+            <label>Prize Pool (PKR)</label>
+            <input type="number" name="prize" value="3000" />
+          </div>
+        </div>
+        <div class="row" style="gap:10px">
+          <div class="field" style="flex:1">
+            <label>Date *</label>
+            <input type="date" name="date" required />
+          </div>
+          <div class="field" style="flex:1">
+            <label>Time (PKT) *</label>
+            <input type="time" name="time" required />
+          </div>
+        </div>
+        <div class="row" style="gap:10px">
+          <div class="field" style="flex:1">
+            <label>Max Teams/Players *</label>
+            <input type="number" name="max" value="32" required />
+          </div>
+          <div class="field" style="flex:1">
+            <label>Region</label>
+            <input name="region" placeholder="Pakistan, India, Global" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Banner Image URL (optional)</label>
+          <input name="banner" placeholder="https://..." />
+        </div>
+        <div class="footer">
+          <button class="btn" value="close" formnovalidate>Cancel</button>
+          <button class="btn brand" value="submit">Save</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Admin Panel -->
+  <dialog id="adminDialog">
+    <form method="dialog" id="adminForm">
+      <div class="modal">
+        <div class="row" style="margin-bottom:8px">
+          <h3 style="margin:0">Admin Panel</h3>
+          <button class="btn" value="close" formnovalidate>✖</button>
+        </div>
+
+        <div class="card" style="margin-bottom:10px">
+          <div class="pad">
+            <h4 style="margin:0 0 6px">Security</h4>
+            <div class="row" style="gap:10px">
+              <div class="field" style="flex:1">
+                <label>Admin Email (fixed)</label>
+                <input value="akkiller612@gmail.com" disabled />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Set/Change Admin Password</label>
+                <input id="newPass" placeholder="new password" />
+              </div>
+            </div>
+            <div class="footer">
+              <button class="btn" id="savePassBtn">Save Password</button>
+            </div>
+            <p class="note">Static site: yeh password browser ke localStorage me store hota hai.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pad">
+            <h4 style="margin:0 0 6px">Tournaments (edit JSON)</h4>
+            <textarea id="tJSON" style="width:100%;height:180px;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit"></textarea>
+            <div class="footer">
+              <button class="btn" id="loadT">Load</button>
+              <button class="btn brand" id="saveT">Save</button>
+            </div>
+            <p class="note">Save karne ke baad homepage turant refresh hoga.</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- WhatsApp floating -->
+  <a class="btn brand fab-wa" href="#" id="waFab">WhatsApp Support</a>
+
+  <script src="app.js"></script>
+  <script>
+    // ---------- Demo data & state ----------
+    const S_TOURNEYS = "qt.tournaments.v1";
+    const S_REGS = "qt.registrations.v1";
+
+    const seeds = [
+      { id:"ff-001", title:"Solo Blitz Cup", mode:"Solo", date:"2025-09-10", time:"20:00",
+        prizePool:5000, maxTeams:64, registered:28, platform:"Garena Free Fire (OB43)", region:"South Asia",
+        banner:"https://images.unsplash.com/photo-1542751110-97427bbecf20?q=80&w=1600&auto=format&fit=crop" },
+      { id:"ff-002", title:"Duo Rush Showdown", mode:"Duo", date:"2025-09-15", time:"21:00",
+        prizePool:8000, maxTeams:48, registered:36, platform:"Garena Free Fire (OB43)", region:"Open – Global",
+        banner:"https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1600&auto=format&fit=crop" },
+      { id:"ff-003", title:"Squad Masters League", mode:"Squad", date:"2025-09-25", time:"19:30",
+        prizePool:15000, maxTeams:32, registered:12, platform:"Garena Free Fire (OB43)", region:"Pakistan + India",
+        banner:"https://images.unsplash.com/photo-1553481187-be93c21490a9?q=80&w=1600&auto=format&fit=crop" },
+    ];
+
+    const $ = sel => document.querySelector(sel);
+    const grid = $("#grid");
+    const empty = $("#empty");
+    const q = $("#q");
+    const mode = $("#mode");
+    const year = $("#year");
+    if(year) year.textContent = new Date().getFullYear();
+
+    let tournaments = JSON.parse(localStorage.getItem(S_TOURNEYS) || "null") || seeds;
+    let registrations = JSON.parse(localStorage.getItem(S_REGS) || "[]");
+
+    function saveState(){
+      localStorage.setItem(S_TOURNEYS, JSON.stringify(tournaments));
+      localStorage.setItem(S_REGS, JSON.stringify(registrations));
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-    a{color:inherit}
-    .container{max-width:1100px;margin:0 auto;padding:0 16px}
-    header{
-      position:sticky;top:0;z-index:10;background:rgba(255,255,255,.8);
-      backdrop-filter: blur(8px);border-bottom:1px solid var(--line)
+
+    function spotsLeft(t){ return t.maxTeams - t.registered; }
+    function cardHTML(t){
+      const left = spotsLeft(t);
+      const leftCls = left>0 ? "ok" : "bad";
+      const leftText = left>0 ? `${left} spots left` : "Full";
+      return `
+        <article class="card">
+          <div class="banner"><img alt="${t.title}" src="${t.banner}"></div>
+          <div class="pad">
+            <div class="row" style="margin-bottom:4px">
+              <h3 style="margin:0;font-size:18px">${t.title}</h3>
+              <span class="chip">${t.mode}</span>
+            </div>
+            <div class="meta">
+              <div>📅 ${t.date} • ${t.time}</div>
+              <div>🏆 PKR ${Number(t.prizePool||0).toLocaleString()}</div>
+              <div>👥 ${t.registered}/${t.maxTeams}</div>
+            </div>
+            <div class="muted" style="margin-top:6px">${t.platform || "Free Fire"} • ${t.region || "Open"}</div>
+            <div class="row" style="margin-top:10px">
+              <span class="${leftCls}" style="font-weight:700;font-size:13px">${leftText}</span>
+              <button class="btn brand" ${left<=0?"disabled":""} onclick="openRegister('${t.id}')">Register</button>
+            </div>
+          </div>
+        </article>
+      `;
     }
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:800}
-    .brand .logo{width:28px;height:28px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff}
-    .btn{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600}
-    .btn.brand{background:linear-gradient(135deg,var(--brand),var(--brand-2));border:none;color:#fff}
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    .hero{background:linear-gradient(180deg,#fff, #fff 40%, #fff2e6);border-bottom:1px solid var(--line)}
-    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;padding:32px 0}
-    .hero h1{font-size:clamp(26px,4vw,44px);line-height:1.1;margin:0}
-    .hero p{color:var(--muted);margin:12px 0 0}
-    .hero .cta{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-    .shot{height:320px;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-    .shot img{width:100%;height:100%;object-fit:cover}
-    /* toolbar */
-    .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .search{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:12px;background:#fff;min-width:280px}
+
+    function render(){
+      const txt = (q?.value || "").trim().toLowerCase();
+      const m = mode?.value || "All";
+      const list = tournaments.filter(t=>{
+        const inQ = !txt || t.title.toLowerCase().includes(txt) || t.mode.toLowerCase().includes(txt) || (t.region||"").toLowerCase().includes(txt);
+        const inM = m === "All" || t.mode.toLowerCase().includes(m.toLowerCase());
+        return inQ && inM;
+      });
+      grid.innerHTML = list.map(cardHTML).join("");
+      if(empty) empty.style.display = list.length? "none":"block";
+    }
+
+    q?.addEventListener("input", render);
+    mode?.addEventListener("change", render);
+
+    // Register flow
+    const regDialog = $("#regDialog");
+    const regTitle = $("#regTitle");
+    const fTeam = $("#fTeam");
+    const fCaptain = $("#fCaptain");
+    const fPhone = $("#fPhone");
+    const fEmail = $("#fEmail");
+    const fIds = $("#fIds");
+    const submitReg = $("#submitReg");
+    let regTournamentId = null;
+
+    window.openRegister = function(id){
+      const t = tournaments.find(x=>x.id===id);
+      if(!t) return;
+      regTournamentId = id;
+      regTitle.textContent = t.title;
+      if(fTeam) fTeam.value = "";
+      if(fCaptain) fCaptain.value = "";
+      if(fPhone) fPhone.value = "";
+      if(fEmail) fEmail.value = "";
+      if(fIds) fIds.value = "";
+      regDialog.showModal();
+    }
+
+    submitReg?.addEventListener("click", (e)=>{
+      if(!fTeam.value.trim() || !fCaptain.value.trim() || !fPhone.value.trim()){
+        e.preventDefault(); alert("Please fill required fields."); return;
+      }
+      const tIndex = tournaments.findIndex(x=>x.id===regTournamentId);
+      if(tIndex===-1){ alert("Tournament not found"); return; }
+      const t = tournaments[tIndex];
+      if(spotsLeft(t)<=0){ e.preventDefault(); alert("Tournament is full."); return; }
+      registrations.push({
+        tournamentId: regTournamentId,
+        teamName: fTeam.value.trim(),
+        captain: fCaptain.value.trim(),
+        phone: fPhone.value.trim(),
+        email: fEmail.value.trim(),
+        playerIds: fIds.value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      tournaments[tIndex].registered = Math.min(t.maxTeams, t.registered + 1);
+      saveState(); render();
+      setTimeout(()=>alert("Registration received! We'll contact you on WhatsApp/Email."), 0);
+    });
+
+    // Create Tournament
+    const btnCreate = $("#btnCreate");
+    const createDialog = $("#createDialog");
+    const createForm = $("#createForm");
+    btnCreate?.addEventListener("click", ()=>createDialog.showModal());
+    createForm?.addEventListener("submit", (e)=>{
+      const fd = new FormData(createForm);
+      const t = {
+        id: crypto.randomUUID(),
+        title: (fd.get("title")||"").toString(),
+        mode: (fd.get("mode")||"Squad").toString(),
+        date: (fd.get("date")||"").toString(),
+        time: (fd.get("time")||"").toString(),
+        prizePool: Number(fd.get("prize")||0),
+        maxTeams: Number(fd.get("max")||0),
+        registered: 0,
+        platform: "Garena Free Fire",
+        region: (fd.get("region")||"Open").toString(),
+        banner: (fd.get("banner")||"https://images.unsplash.com/photo-1553481187-be93c21490a9?q=80&w=1600&auto=format&fit=crop").toString(),
+      };
+      tournaments = [t, ...tournaments];
+      saveState(); render();
+    });
+
+    // Footer tools
+    $("#reset")?.addEventListener("click", ()=>{
+      if(confirm("Clear saved tournaments & registrations?")){
+        localStorage.removeItem(S_TOURNEYS);
+        localStorage.removeItem(S_REGS);
+        tournaments = seeds.slice();
+        registrations = [];
+        render();
+        alert("Local data cleared.");
+      }
+    });
+
+    // WhatsApp floating
+    const waFab = $("#waFab");
+    if(waFab){ waFab.href = QT.waLink("Salam! Mujhe QURASHI Tournaments support chahiye."); }
+
+    // Admin controls show/hide
+    function applyAdminVisibility(){
+      document.querySelectorAll("[data-admin]").forEach(el=>{
+        el.classList.toggle("hidden", !QT.isAdmin());
+      });
+      document.querySelectorAll("[data-logout]").forEach(el=>{
+        el.classList.toggle("hidden", !QT.getAuth());
+      });
+      const loginTop = document.querySelector("#loginTop");
+      if(loginTop) loginTop.classList.toggle("hidden", !!QT.getAuth());
+    }
+
+    // Admin Panel
+    const adminDialog = $("#adminDialog");
+    $("#openAdmin")?.addEventListener("click", ()=>{
+      if(!QT.isAdmin()){ alert("Admin only. Please login with authorized email."); return; }
+      // preload tournaments JSON
+      $("#tJSON").value = JSON.stringify(tournaments, null, 2);
+      adminDialog.showModal();
+    });
+    $("#loadT")?.addEventListener("click", (e)=>{ e.preventDefault();
+      $("#tJSON").value = JSON.stringify(JSON.parse(localStorage.getItem(S_TOURNEYS) || "[]"), null, 2);
+    });
+    $("#saveT")?.addEventListener("click", (e)=>{ e.preventDefault();
+      try{
+        tournaments = JSON.parse($("#tJSON").value);
+        saveState(); render();
+        alert("Saved!");
+      }catch(err){ alert("Invalid JSON: " + err.message); }
+    });
+    $("#savePassBtn")?.addEventListener("click",(e)=>{ e.preventDefault();
+      const p = $("#newPass").value.trim();
+      if(!p) return alert("Enter new password.");
+      QT.setAdminPass(p); $("#newPass").value="";
+      alert("Admin password updated on this device.");
+    });
+
+    // init
+    render();
+    initMenu();
+    applyAdminVisibility();
+  </script>
+</body>
+              </html>    .search{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:12px;background:#fff;min-width:280px}
     .search input{border:none;outline:none;width:100%;font:inherit;background:transparent}
     select{border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff}
     /* grid */
