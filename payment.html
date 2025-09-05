@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Payment — QURASHI Tournaments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">🏆</div>
+        <div>QURASHI Tournaments</div>
+      </div>
+      <div class="tools">
+        <a class="btn ghost" href="index.html">Home</a>
+        <a class="btn ghost" href="login.html">Login</a>
+        <div class="menu">
+          <button id="menuBtn" class="menu-btn">⋮</button>
+          <div id="menuList" class="menu-list">
+            <a href="index.html">Home</a>
+            <a href="payment.html">Payment</a>
+            <a href="login.html">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>💳 Payment Method (JazzCash)</h2>
+
+        <div class="card" style="margin-bottom:12px">
+          <div class="pad">
+            <div class="row">
+              <div><strong>Account Name:</strong> Noraiz Ejaz</div>
+              <div><strong>Number:</strong> <span id="jcNum">03354370203</span></div>
+            </div>
+            <div class="row" style="margin-top:8px">
+              <button class="btn" onclick="QT.copyText('Noraiz Ejaz')">Copy Name</button>
+              <button class="btn" onclick="QT.copyText(document.getElementById('jcNum').innerText)">Copy Number</button>
+              <a class="btn brand" id="waProof" href="#">Send Payment Proof</a>
+            </div>
+            <p class="note" style="margin-top:8px">Payment karne ke baad proof (screenshot/ID) WhatsApp par bhejein.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="pad">
+            <h3 style="margin:0 0 6px">Entry Fees (Quick View)</h3>
+            <table>
+              <thead><tr><th>Mode</th><th>Entry Fee</th><th>Winning Prize</th></tr></thead>
+              <tbody>
+                <tr><td>Solo</td><td>PKR 50</td><td>PKR 90</td></tr>
+                <tr><td>Duo</td><td>PKR 50 / player</td><td>PKR 90 / player</td></tr>
+                <tr><td>Squad</td><td>PKR 50 / player</td><td>PKR 90 / player</td></tr>
+              </tbody>
+            </table>
+            <table style="margin-top:10px">
+              <thead><tr><th>BR Players</th><th>Entry Fee (per player)</th><th>Winning Prize</th></tr></thead>
+              <tbody>
+                <tr><td>20</td><td>PKR 20</td><td>PKR 350</td></tr>
+                <tr><td>30</td><td>PKR 20</td><td>PKR 450</td></tr>
+                <tr><td>48</td><td>PKR 20</td><td>PKR 600</td></tr>
+              </tbody>
+            </table>
+            <p class="note" style="margin-top:8px">Full details: <a href="index.html#fees">Home → Fees</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a class="btn brand fab-wa" id="waFab" href="#">WhatsApp Support</a>
+
+  <script src="app.js"></script>
+  <script>
+    initMenu();
+    const msg = `Salam! Maine entry fee JazzCash par pay ki hai.
+Name: Noraiz Ejaz
+Number: 03354370203
+Screenshot/Txn ID: ___
+Tournament: ___`;
+    document.querySelector("#waProof").href = QT.waLink(msg);
+    document.querySelector("#waFab").href = QT.waLink("Payment related help chahiye.");
+  </script>
+</body>
+                </html>
