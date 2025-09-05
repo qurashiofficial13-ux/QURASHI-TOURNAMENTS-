@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Login — QURASHI Tournaments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">🏆</div>
+        <div>QURASHI Tournaments</div>
+      </div>
+      <div class="tools">
+        <a class="btn ghost" href="index.html">Home</a>
+        <a class="btn ghost" href="payment.html">Payment</a>
+        <div class="menu">
+          <button id="menuBtn" class="menu-btn">⋮</button>
+          <div id="menuList" class="menu-list">
+            <a href="index.html">Home</a>
+            <a href="payment.html">Payment</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container" style="max-width:520px">
+        <h2>Login</h2>
+        <div class="card">
+          <div class="pad">
+            <div class="field">
+              <label>Email</label>
+              <input id="email" placeholder="you@gmail.com" />
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input id="password" type="password" placeholder="********" />
+            </div>
+            <div class="footer">
+              <button class="btn" id="cancel">Cancel</button>
+              <button class="btn brand" id="loginBtn">Login</button>
+            </div>
+            <p class="note" style="margin-top:8px">
+              Authorized admin email: <strong>akkiller612@gmail.com</strong> (default password: <code>qurashi123</code>).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a class="btn brand fab-wa" id="waFab" href="#">WhatsApp Support</a>
+
+  <script src="app.js"></script>
+  <script>
+    initMenu();
+    document.querySelector("#waFab").href = QT.waLink("Mujhe login help chahiye.");
+
+    document.querySelector("#cancel").addEventListener("click", ()=>location.href="index.html");
+    document.querySelector("#loginBtn").addEventListener("click", ()=>{
+      const email = document.querySelector("#email").value.trim();
+      const pass = document.querySelector("#password").value.trim();
+      if(!email || !pass) return alert("Email and password required.");
+
+      const okEmail = email.toLowerCase() === QT.ADMIN_EMAIL.toLowerCase();
+      const okPass = pass === QT.getAdminPass();
+      if(okEmail && okPass){
+        QT.setAuth({ email }); // mark logged in
+        alert("Login successful!");
+        location.href = "index.html";
+      }else{
+        alert("Invalid email or password.");
+      }
+    });
+  </script>
+</body>
+  </html>
